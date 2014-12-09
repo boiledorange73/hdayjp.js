@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="./hdayjp.js"></script>
+<script type="text/javascript">
+function doit() {
+  // clears pre#R
+  var er = document.getElementById("R");
+  er.innerHTML = "";
+  // Gets y, m and lc.
+  var y = parseInt(document.getElementById("Y").value);
+  var m = parseInt(document.getElementById("M").value);
+  var lc = document.getElementById("LC").value;
+  // Calculates
+  var results = hdayjp.calculate(y, m-1);
+  // Shows results
+  if( results != null ) {
+    var t = "";
+    for( var n = 0; n < results.length; n++ ) {
+      var r = results[n];
+      t = t + y + "-" + m + "-" + r.md + " " + r.getText(lc) + "\n";
+    }
+    er.innerHTML = t;
+  }
+  else {
+    er.innerHTML = "(null)";
+  }
+}
+</script>
+<title>hdayjp.js test page</title>
+</head>
+<body>
+<form method="GET" action="javascript:void(0)">
+  Year: <input id="Y" type="text" size="4">
+  <br>
+  Month: <input id="M" type="text" size="2"> (Starting with 1)
+  <br>
+  Lang: <select id="LC">
+        <option value="ja">ja</option>
+        <option value="ja_kana">ja_kana</option>
+        <option value="C">C</option>
+        </select>
+  <br>
+  <input type="submit" onclick="doit()">
+</form>
+
+<pre id="R">
+</pre>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+hdayjp.js
+=========
+1948年以後の祝日等を計算するJavaScriptライブラリです。
+
+var result;
+result = hdayjp.calculate(y, m);
+
+で、指定した年月の祝日等計算結果の配列を計算します。
+
+計算結果は次のプロパティを含みます。
+md - 日
+getText(lc) - 祝日等名(lcは"ja","ja_kana"または"C"が有効です)
+
+test.html を参考にしてください。
