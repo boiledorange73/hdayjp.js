@@ -1,5 +1,5 @@
 //
-// hdayjp
+// hdayjp 2014-12-10
 //
 if( !window.hdayjp ) {
   window.hdayjp = {};
@@ -217,8 +217,17 @@ hdayjp.VernalEquinoxEntry.prototype = new hdayjp.Entry();
 // --------------------------------
 hdayjp.VernalEquinoxEntry.prototype.calc = function(y, m) {
   var id = this["id"];
-  // http://oshiete.goo.ne.jp/qa/1454974.html
-  var d = parseInt(20.8431 + 0.242194 * ( y - 1980)) - parseInt((y - 1980)/4);
+  var d;
+  if( y < 1980 ) {
+    // http://www.asahi-net.or.jp/~ci5m-nmr/misc/equinox.html
+    // 20 - 1960, 1964, 1968, 1972, 1976
+    // 21 - others
+    d = (y >= 1960 && y % 4 == 0) ? 20 : 21;
+  }
+  else {
+    // http://oshiete.goo.ne.jp/qa/1454974.html
+    d = parseInt(20.8431 + 0.242194 * ( y - 1980)) - parseInt((y - 1980)/4);
+  }
   return new hdayjp.Result(id, d);
 }
 
@@ -247,8 +256,19 @@ hdayjp.AutumnEquinoxEntry.prototype = new hdayjp.Entry();
 // --------------------------------
 hdayjp.AutumnEquinoxEntry.prototype.calc = function(y, m) {
   var id = this["id"];
-  // http://oshiete.goo.ne.jp/qa/1454974.html
-  var d = parseInt(23.2488 + 0.242194 * ( y - 1980)) - parseInt((y - 1980)/ 4);
+  var d;
+  // 2014-12-10 - 1948-1980 added. (issue #2)
+  if( y < 1980 ) {
+    // http://www.asahi-net.or.jp/~ci5m-nmr/misc/equinox.html
+    // 24 - 1951, 1955, 1959, 1963, 1967, 1971, 1975, 1979
+    // 23 - others
+    d = (y-3) % 4 == 0 ? 24 : 23;
+  }
+  else {
+    // http://oshiete.goo.ne.jp/qa/1454974.html
+    d = parseInt(23.2488 + 0.242194 * ( y - 1980)) - parseInt((y - 1980)/ 4);
+  }
+
   return new hdayjp.Result(id, d);
 }
 
@@ -256,13 +276,15 @@ hdayjp.AutumnEquinoxEntry.prototype.calc = function(y, m) {
 // All entries
 // ================================================
 hdayjp.entries = [
-  // 1948
-  new hdayjp.FixedEntry("NYD",1948,null, 0, 1), // 元日
-  new hdayjp.FixedEntry("CAD",1948,1999, 0, 15), // 成人の日(1月15日)
-  new hdayjp.VernalEquinoxEntry(1948,null), // 春分
-  new hdayjp.FixedEntry("EBD",1948,1988, 3, 29), // 天皇誕生日(4月29日) -1988
-  new hdayjp.FixedEntry("CTD",1948,null, 4, 3), // 憲法記念日(5月3日)
-  new hdayjp.FixedEntry("CDD",1948,null, 4, 5), // こどもの日(5月5日)
+  // 1948 (July-)
+  // 2014-12-10 - syear of NYD,CAD,(Vernal),EBD,CTD,CDD are changed (1948 to 1949)
+  // (issue #2)
+  new hdayjp.FixedEntry("NYD",1949,null, 0, 1), // 元日
+  new hdayjp.FixedEntry("CAD",1949,1999, 0, 15), // 成人の日(1月15日)
+  new hdayjp.VernalEquinoxEntry(1949,null), // 春分
+  new hdayjp.FixedEntry("EBD",1949,1988, 3, 29), // 天皇誕生日(4月29日) -1988
+  new hdayjp.FixedEntry("CTD",1949,null, 4, 3), // 憲法記念日(5月3日)
+  new hdayjp.FixedEntry("CDD",1949,null, 4, 5), // こどもの日(5月5日)
   new hdayjp.AutumnEquinoxEntry(1948,null), // 秋分
   new hdayjp.FixedEntry("CLD",1948,null, 10, 3), // 文化の日(11月3日)
   new hdayjp.FixedEntry("LTD",1948,null, 10, 23), // 勤労感謝の日(11月23日)
