@@ -1,5 +1,5 @@
 //
-// hdayjp 2014-12-10
+// hdayjp 2014-12-20
 //
 if( !window.hdayjp ) {
   window.hdayjp = {};
@@ -389,8 +389,8 @@ hdayjp.calculate = function(y, m, ny) {
       }
     }
   }
-  // Holiday in liew (HL) 1973-
-  if( y >= 1973 ) {
+  // Holiday in liew (HL) 1973/4(/12)-
+  if( y > 1973 || (y = 1973 && m>=3) ) {
     for( var d = 7 - fw + 1; d <= mdays; d+= 7 ) {
       if( mdaytable[d] != null ) {
         var hit = false;
