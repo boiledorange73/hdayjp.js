@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>カレンダー</title>
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="hdayjp.js"></script>
+<script>
+var weekclasses = [
+  "sun", "mon", "tue", "wed", "thu", "fri", "sat"
+];
+
+var weektexts = {
+  "C": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+  "ja": ["日", "月", "火", "水", "木", "金", "土"]
+};
+
+var monthtexts = {
+  "C": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  "ja": ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+};
+
+var lc = "ja";
+
+function mkcalendar(y, m) {
+  // y and m must NOT BE STRING, but BE INTEGER.
+  y = parseInt(y);
+  m = parseInt(m);
+  // Gets first wday of 1st day of the month.
+  var fwd = hdayjp.calcFirstWday(y, m);
+  // Gets days of the month.
+  var mdays = hdayjp.calcMdays(y, m);
+  // Gets all holidays in specified year/month.
+  var hdays = hdayjp.calculate(y, m);
+  // Gets tbody element, and clears all children.
+  var tbody = $("#CALBODY");
+  tbody.children().remove();
+  var tr;
+  // head
+  tr = $("<tr />");
+  for(var n = 0; n < 7; n++ ) {
+    var th = $("<th />")
+      .addClass(weekclasses[n])
+      .text(weektexts[lc][n]);
+    tr.append(th);
+  }
+  tbody.append(tr);
+  // body
+  // All cells are created.
+  // Only date of month (mday) cells ( 1 - days of the month) are filled with texts.
+  var mday = 1 - fwd;
+  for( var r = 0; r < 6; r++ ) {
+    tr = $("<tr />");
+    for( c = 0; c < 7; c++ ) {
+      var td = $("<td />");
+      if( mday >= 1 && mday <= mdays ) {
+        td.addClass(weekclasses[c]);
+        td.text(mday);
+        if( hdays != null ) {
+          for( var n = 0; n < hdays.length; n++ ) {
+            if( hdays[n].md == mday ) {
+              td.addClass("hday");
+              td.click(
+                function(mess){
+                  return function() {
+                    alert(mess);
+                  };
+                }(hdays[n].getText(lc))
+              );
+            }
+          }
+        }
+      }
+      tr.append(td);
+      mday++;
+    }
+    tbody.append(tr);
+  }
+}
+
+//
+// Called when values in #FORM are changed, or called by reset().
+//
+function onchange() {
+  $("#CALBODY").children().remove();
+  mkcalendar($("#Y").val(), $("#M").val());
+}
+
+//
+// Resets all for #LC and calls onchange().
+//
+function reset() {
+  lc = $("#LC").val();
+
+  // Gets today y and m.
+  var form = $("#FORM");
+  // Gets this year, month
+  var today_year, today_month;
+  var ch_year = form.children("#Y");
+  var ch_month = form.children("#M");
+  if( ch_year.size() > 0 && ch_month.size() > 0 ) {
+    today_year = ch_year.val();
+    today_month = ch_month.val();
+  }
+  else {
+    var date = new Date();
+    today_year = date.getFullYear();
+    today_month = date.getMonth();
+  }
+  // clears all in #FORM
+  form.children().remove();
+  // creates year (input)
+  form.append($("<input />")
+    .attr("type","text")
+    .attr("id","Y")
+    .attr("name","Y")
+    .attr("size","4")
+    .val(today_year)
+    .change(onchange)
+  );
+  // create month (select)
+  var month = $("<select />")
+    .attr("id","M")
+    .attr("name","M")
+    .change(onchange);
+  for( var m = 0; m < 12; m++ ) {
+    month.append($("<option />").text(monthtexts[lc][m]).attr("value",m));
+  }
+  month.val(today_month);
+  form.append(month);
+  onchange();
+}
+
+//
+// Initializes for #LCFORM and calls reset().
+//
+function init() {
+  lc = "ja";
+  $("#LCFORM").append(
+    $("<select />")
+      .attr("id", "LC")
+      .attr("name", "LC")
+      .change(reset)
+      .append(
+        $("<option />").text("日本語").attr("value","ja")
+      )
+      .append(
+        $("<option />").text("English").attr("value","C")
+      )
+      .val(lc)
+  );
+  reset();
+}
+
+$(window).ready(init);
+</script>
+<style>
+
+#LCFORM {
+  padding: 0.5em 0 0.5em 0;
+}
+
+#FORM {
+  padding: 0.5em 0 0.5em 0;
+}
+
+.calendar {
+  border-collapse: collapse;
+}
+
+.calendar th,
+.calendar td {
+  padding: 0.25em;
+  border: solid 1px #666;
+  font-weight: normal;
+  height: 1.75em;
+}
+
+.calendar th {
+  text-align: center;
+  background: #333;
+  color: #fff;
+}
+
+.calendar th.sun {
+  background: #f00;
+  color: #fff;
+}
+
+.calendar td {
+  text-align: right;
+}
+
+.calendar td.hday {
+  background: #fcc;
+  cursor: pointer;
+}
+
+.calendar td.sun {
+  color: #f00;
+}
+
+.calendar td.sat {
+  color: #00c;
+}
+
+
+</style>
+</head>
+<body>
+
+<p><a href="https://github.com/boiledorange73/hdayjp.js/">hdayjp.js</a></p>
+
+<form action="javascript:void(0)" method="GET" id="LCFORM">
+</form>
+
+<form action="javascript:void(0)" method="GET" id="FORM">
+</form>
+
+<table class="calendar">
+<tbody id="CALBODY">
+</tbody>
+</table>
+</body>
+</html>
