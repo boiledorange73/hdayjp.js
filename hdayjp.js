@@ -299,7 +299,7 @@ hdayjp.entries = [
   new hdayjp.FixedEntry("MRD",1996,2002, 6, 20), // 海の日(7月20日) - 2002
   // 2000
   new hdayjp.WdayEntry("CAD",2000,null, 0, 2, 1), // 成人の日(1月第2月曜)
-  new hdayjp.WdayEntry("CAD",2000,null, 9, 2, 1), // 体育の日(10月第2月曜)
+  new hdayjp.WdayEntry("HSD",2000,null, 9, 2, 1), // 体育の日(10月第2月曜)
   // 2003
   new hdayjp.WdayEntry("MRD",2003,null, 6, 3, 1), // 海の日(7月第3月曜)
   new hdayjp.WdayEntry("RAD",2003,null, 8, 3, 1), // 敬老の日(9月第3月曜)
