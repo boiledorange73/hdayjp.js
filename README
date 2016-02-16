@@ -6,6 +6,8 @@ var result;
 result = hdayjp.calculate(y, m);
 
 で、指定した年月の祝日等計算結果の配列を計算します。
+y - 西暦年
+m - 月 (0はじまりで、1月ならm=0, 12月ならm=11)
 
 result = hdayjp.calculate(y, m, true);
 
