@@ -18,4 +18,3 @@ md - 日
 getText(lc) - 祝日等名(lcは"ja","ja_kana"または"C"が有効です)
 
 test.html を参考にしてください。
-または、http://boiledorange73.github.io/hdayjp.js/ をご覧下さい。
