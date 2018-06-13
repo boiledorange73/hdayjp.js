@@ -481,7 +481,8 @@ hdayjp.calculate = function(y, m, ny) {
 
   // Holiday in lieu (HL) 1973/4(/12)-
   if( y > 1973 || (y = 1973 && m>=3) ) {
-    for( var d = 7 - fw + 1; d <= mdays; d+= 7 ) {
+    // Fixed: initial value of d was [8-2] (correct: [1,7-2])
+    for( var d = (7 - fw) % 7 + 1; d <= mdays; d+= 7 ) {
       if( mdaytable[d] != null ) {
         var hit = false;
         for( var d1 = d + 1; !hit && d1 <= mdays; d1++ ) {
