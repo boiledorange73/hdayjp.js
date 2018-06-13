@@ -488,7 +488,6 @@ hdayjp.calculate = function(y, m, ny) {
         for( var d1 = d + 1; !hit && d1 <= mdays; d1++ ) {
           if( mdaytable[d1] == null && (d1+fw-1)%7 != 0 ) {
             mdaytable[d1] = new hdayjp.Result("HL", d1);
-            d = d1; // updates d
             hit = true;
           }
         }
