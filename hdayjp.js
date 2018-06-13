@@ -1,5 +1,7 @@
 //
-// hdayjp 2014-12-20
+// hdayjp
+// 2018-06-13
+// 2014-12-20
 //
 if( !window.hdayjp ) {
   window.hdayjp = {};
@@ -17,6 +19,7 @@ hdayjp._resources = {
   "NFD": {"C": "National Foundation Day", "ja": "建国記念の日", "ja_kana": "けんこくきねんのひ"},
   "RAD": {"C": "Respect-for-the-Aged Day", "ja": "敬老の日", "ja_kana": "けいろうのひ"},
   "HSD": {"C": "Health and Sports Day", "ja": "体育の日", "ja_kana": "たいいくのひ"},
+  "SPD": {"C": "Sports Day", "ja": "スポーツの日", "ja_kana": "すぽーつのひ"},
   "GRD": {"C": "Greenery Day", "ja": "みどりの日", "ja_kana": "みどりのひ"},
   "MRD": {"C": "Marine Day", "ja": "海の日", "ja_kana": "うみのひ"},
   "SWD": {"C": "Showa Day", "ja": "昭和の日", "ja_kana": "しょうわのひ"},
@@ -31,6 +34,55 @@ hdayjp._resources = {
 
 // Locale. Only "ja" or "C" is avialable.
 hdayjp._lc = "ja";
+
+// ================================================
+// irregular hdays for each year
+// Added: 2018-06-13
+// ================================================
+hdayjp.irregularHDays = function(year, days) {
+  this.year = year;
+  this.days = days;
+};
+
+hdayjp.irregularHDays.prototype.calcTo = function(m, mdaytable) {
+  var days = this.days;
+  var len = days != null ? days.length : 0;
+  var ret = [];
+  for( var n = 0; n < len; n++ ) {
+    var day = days[n];
+    if( day.to[0] == m ) {
+      var r = new hdayjp.Result(day.id, day.to[1]);
+      ret.push(r);
+      if( mdaytable != null ) {
+        mdaytable[r.md] = r;
+      }
+    }
+  }
+  return ret;
+};
+
+hdayjp.irregularHDays.prototype.calcHit = function(id) {
+  var days = this.days;
+  var len = days != null ? days.length : 0;
+  for( var n = 0; n < len; n++ ) {
+    var day = days[n];
+    if( day.id == id ) {
+      return true;
+    }
+  }
+  return false;
+};
+
+hdayjp.calcIrregularHdays = function(y) {
+  var len = hdayjp._ihds != null ? hdayjp._ihds.length : 0;
+  for( var n = 0; n < len; n++ ) {
+    var ihd = hdayjp._ihds[n];
+    if( ihd.year == y ) {
+      return ihd;
+    }
+  }
+  return null;
+};
 
 // ================================================
 // Result Class
@@ -299,7 +351,7 @@ hdayjp.entries = [
   new hdayjp.FixedEntry("MRD",1996,2002, 6, 20), // 海の日(7月20日) - 2002
   // 2000
   new hdayjp.WdayEntry("CAD",2000,null, 0, 2, 1), // 成人の日(1月第2月曜)
-  new hdayjp.WdayEntry("HSD",2000,null, 9, 2, 1), // 体育の日(10月第2月曜)
+  new hdayjp.WdayEntry("HSD",2000,2019, 9, 2, 1), // 体育の日(10月第2月曜) - 2019
   // 2003
   new hdayjp.WdayEntry("MRD",2003,null, 6, 3, 1), // 海の日(7月第3月曜)
   new hdayjp.WdayEntry("RAD",2003,null, 8, 3, 1), // 敬老の日(9月第3月曜)
@@ -308,8 +360,35 @@ hdayjp.entries = [
   new hdayjp.FixedEntry("GRD",2007,null, 4, 4), // みどりの日(5月4日)
   // 2016
   new hdayjp.FixedEntry("MTD",2016,null, 7, 11), // 山の日(8月11日)
+  // 2020 (Added: 2018-06-13)
+  new hdayjp.WdayEntry("SPD",2020,null, 9, 2, 1), // スポーツの日(10月第2月曜)
   null
 ];
+
+// ================================================
+// all irregular hdays
+// Added: 2018-06-13
+// ================================================
+hdayjp._ihds = [
+  new hdayjp.irregularHDays(
+    2020,
+    [
+      {
+        "id": "MRD",
+        "to": [6, 23]
+      },
+      {
+        "id": "SPD",
+        "to": [6, 24]
+      },
+      {
+        "id": "MTD",
+        "to": [7, 10]
+      }
+    ]
+  )
+];
+
 
 // ================================================
 // Count of mday (day of month) for each month.
@@ -379,17 +458,28 @@ hdayjp.calculate = function(y, m, ny) {
   var mdaytable = [];
   var fw = hdayjp.calcFirstWday(y, m);
   var mdays = hdayjp.calcMdays(y, m);
+  // Added: 2018-06-13
+  var ihd = hdayjp.calcIrregularHdays(y);
+  // Added: 2018-06-13, adds irregulars
+  if( ihd != null ) {
+    ihd.calcTo(m, mdaytable);
+  }
   // Entried Holidays
   for(var n = 0; n < hdayjp.entries.length; n++ ) {
     var e = hdayjp.entries[n];
     if( e != null && e.hit(y, m) ) {
       var r = e.calc(y, m);
       if( r != null ) {
-        mdaytable[r.md] = r;
+        // Added: 2018-06-13, whether removed ?
+        if( ihd == null || !ihd.calcHit(r.id) ) {
+          // not removed. registers.
+          mdaytable[r.md] = r;
+        }
       }
     }
   }
-  // Holiday in liew (HL) 1973/4(/12)-
+
+  // Holiday in lieu (HL) 1973/4(/12)-
   if( y > 1973 || (y = 1973 && m>=3) ) {
     for( var d = 7 - fw + 1; d <= mdays; d+= 7 ) {
       if( mdaytable[d] != null ) {
