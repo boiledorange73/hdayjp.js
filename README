@@ -17,4 +17,5 @@ result = hdayjp.calculate(y, m, true);
 md - 日
 getText(lc) - 祝日等名(lcは"ja","ja_kana"または"C"が有効です)
 
-test.html を参考にしてください。
+test.html, caljp.html を参考にしてください。
+(http://boiledorange73.github.io/hdayjp.js/ から閲覧できます)
