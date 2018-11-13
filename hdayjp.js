@@ -9,6 +9,13 @@ if( !window.hdayjp ) {
 
 // resources
 hdayjp._resources = {
+  // Added on 2018-11-13.
+  // special holidays
+  "1959-04-10": {"C": "The Marriage Ceremony of Prince Akihito", "ja": "皇太子明仁親王の結婚の儀", "ja_kana": "こうたいしあきひとしんのうけっこんのぎ"},
+  "1989-02-24": {"C": "The Rites of an Imperial Funeral", "ja": "昭和天皇の大喪の礼", "ja_kana": "しょうわてんのうたいそうのれい"},
+  "1990-11-12": {"C": "The Enthronement Ceremony", "ja": "即位の礼正殿の儀", "ja_kana": "そくいのれいせいでんのぎ"},
+  "1993-06-09": {"C": "The Marriage Ceremony of Prince Naruhito", "ja": "皇太子・徳仁親王の結婚の儀", "ja_kana": "こうたいしなるひとしんのうけっこんのぎ"},
+  // normal
   "NYD": {"C": "New Year\'s Day", "ja": "元日", "ja_kana": "がんじつ"},
   "CAD": {"C": "Caming-of-Age Day", "ja": "成人の日", "ja_kana": "せいじんのひ"},
   "EBD": {"C": "The  Emperor\'s Birthday", "ja": "天皇誕生日", "ja_kana": "てんのうたんじょうび"},
@@ -328,6 +335,12 @@ hdayjp.AutumnEquinoxEntry.prototype.calc = function(y, m) {
 // All entries
 // ================================================
 hdayjp.entries = [
+  // Added on 2018-11-13.
+  // special holidays
+  new hdayjp.FixedEntry("1959-04-10",1959,1959,  3, 10),
+  new hdayjp.FixedEntry("1989-02-24",1989,1989,  1, 24),
+  new hdayjp.FixedEntry("1990-11-12",1990,1990, 10, 12),
+  new hdayjp.FixedEntry("1993-06-09",1993,1993,  5,  9),
   // 1948 (July-)
   // 2014-12-10 - syear of NYD,CAD,(Vernal),EBD,CTD,CDD are changed (1948 to 1949)
   // (issue #2)
