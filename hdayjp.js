@@ -454,20 +454,23 @@ hdayjp.calcMdays = function(y, m) {
 }
 
 // ================================================
-//  Calculates holidayes in specified year and month.
+//  Calculates holidayes in specified year and month,
+//    excepting National Holiday,
+//    without checking whether y and m are valid.
+//  This should be called only by hdayjp.calculate().
 //  Arguments:
-//    y: Year.
+//    y: Year. Must not be less than 1948.
 //    m: Month code. Starting with 0 (0=Jan, ... 11=Dec).
 //    ny: True/false value indicating whether returned value contains New Year's Holiday.
 //  Returned value:
+//    mdaytable: holidays for each mday [1...mdays], if mday is not holiday, undefined.
+//    fw: First WDay (starting with 0=Sunday)
+//    mdays: Mdays of the month.
 //    Array of hdayjp.Result.
 //    Returns null if y is less than 1948 or m is less than 0 or m is more than 11.
+//  2018-11-14: Created.
 // ================================================
-hdayjp.calculate = function(y, m, ny) {
-  if( !(y >= 1948 && m >= 0 && m <=11) ) {
-    return null;
-  }
-
+hdayjp.calcMonthRaw = function(y, m) {
   var mdaytable = [];
   var fw = hdayjp.calcFirstWday(y, m);
   var mdays = hdayjp.calcMdays(y, m);
@@ -491,7 +494,6 @@ hdayjp.calculate = function(y, m, ny) {
       }
     }
   }
-
   // Holiday in lieu (HL) 1973/4(/12)-
   if( y > 1973 || (y = 1973 && m>=3) ) {
     // Fixed: initial value of d was [8-2] (correct: [1,7-2])
@@ -507,15 +509,50 @@ hdayjp.calculate = function(y, m, ny) {
       }
     }
   }
+  return {
+    "mdaytable": mdaytable,
+    "fw": fw,
+    "mdays": mdays
+  };
+};
+
+// ================================================
+//  Calculates holidayes in specified year and month.
+//  Arguments:
+//    y: Year.
+//    m: Month code. Starting with 0 (0=Jan, ... 11=Dec).
+//    ny: True/false value indicating whether returned value contains New Year's Holiday.
+//  Returned value:
+//    Array of hdayjp.Result.
+//    Returns null if y is less than 1948 or m is less than 0 or m is more than 11.
+// ================================================
+hdayjp.calculate = function(y, m, ny) {
+  if( !(y >= 1948 && m >= 0 && m <=11) ) {
+    return null;
+  }
+
+  // 2018-11-14: modified. bring following part out to hdayjp.calcMonthRaw().
+  var mon = hdayjp.calcMonthRaw(y, m);
+  var monm = m > 0 ? hdayjp.calcMonthRaw(y, m-1) : hdayjp.calcMonthRaw(y-1, 11);
+  var monp = m < 11 ? hdayjp.calcMonthRaw(y, m+1) : hdayjp.calcMonthRaw(y+1, 0);
+
+  var mdaytable = mon.mdaytable;
+
+  var fw = hdayjp.calcFirstWday(y, m);
+  var mdays = hdayjp.calcMdays(y, m);
+
   // National Holiday (NH) 1986-
   if( y >= 1986 ) {
     var st = 0;
-    for( var d = 1; d <= mdays - 2; d++ ) {
-      if( mdaytable[d] != null && mdaytable[d].id != "HL" &&
-          mdaytable[d+1] == null &&
-          mdaytable[d+2] != null && mdaytable[d+2].id != "HL" &&
-          ((d+1)+fw-1) % 7 ) {
-        mdaytable[d+1] = new hdayjp.Result("NH", d+1);
+    mdaytable[0] = monm.mdaytable[monm.mdays];
+    mdaytable[mon.mdays+1] = monp.mdaytable[1];
+    // d+1=2,...
+    for( var d = 1; d <= mdays; d++ ) {
+      if( mdaytable[d-1] != null && mdaytable[d-1].id != "HL" &&
+          mdaytable[d] == null &&
+          mdaytable[d+1] != null && mdaytable[d+1].id != "HL" &&
+          (d+fw-1) % 7 ) {
+        mdaytable[d] = new hdayjp.Result("NH", d);
         d = d + 1;
       }
     }
