@@ -6,19 +6,21 @@
 if( !window.hdayjp ) {
   window.hdayjp = {};
 }
-
+// 1990-11-12 ENTHRN_CER
 // resources
 hdayjp._resources = {
   // Added on 2018-11-13.
+  // Last modified on 2018-12-11 (Enthorement)
   // special holidays
   "1959-04-10": {"C": "The Marriage Ceremony of Prince Akihito", "ja": "皇太子明仁親王の結婚の儀", "ja_kana": "こうたいしあきひとしんのうけっこんのぎ"},
   "1989-02-24": {"C": "The Rites of an Imperial Funeral", "ja": "昭和天皇の大喪の礼", "ja_kana": "しょうわてんのうたいそうのれい"},
-  "1990-11-12": {"C": "The Enthronement Ceremony", "ja": "即位の礼正殿の儀", "ja_kana": "そくいのれいせいでんのぎ"},
+  "ENTHRN_DAY": {"C": "The Enthronement Day", "ja": "天皇の即位の日", "ja_kana": "てんのうのそくいのひ"},
+  "ENTHRN_CER": {"C": "The Enthronement Ceremony", "ja": "即位の礼正殿の儀", "ja_kana": "そくいのれいせいでんのぎ"},
   "1993-06-09": {"C": "The Marriage Ceremony of Prince Naruhito", "ja": "皇太子・徳仁親王の結婚の儀", "ja_kana": "こうたいしなるひとしんのうけっこんのぎ"},
   // normal
   "NYD": {"C": "New Year\'s Day", "ja": "元日", "ja_kana": "がんじつ"},
   "CAD": {"C": "Caming-of-Age Day", "ja": "成人の日", "ja_kana": "せいじんのひ"},
-  "EBD": {"C": "The  Emperor\'s Birthday", "ja": "天皇誕生日", "ja_kana": "てんのうたんじょうび"},
+  "EBD": {"C": "The Emperor\'s Birthday", "ja": "天皇誕生日", "ja_kana": "てんのうたんじょうび"},
   "CTD": {"C": "Constitution Day", "ja": "憲法記念日", "ja_kana": "けんぽうきねんび"},
   "CDD": {"C": "Children\'s Day", "ja": "こどもの日", "ja_kana": "こどものひ"},
   "CLD": {"C": "Culture Day", "ja": "文化の日", "ja_kana": "ぶんかのひ"},
@@ -336,11 +338,14 @@ hdayjp.AutumnEquinoxEntry.prototype.calc = function(y, m) {
 // ================================================
 hdayjp.entries = [
   // Added on 2018-11-13.
+  // Last updated on 2018-12-11 (Enthorement)
   // special holidays
   new hdayjp.FixedEntry("1959-04-10",1959,1959,  3, 10),
   new hdayjp.FixedEntry("1989-02-24",1989,1989,  1, 24),
-  new hdayjp.FixedEntry("1990-11-12",1990,1990, 10, 12),
+  new hdayjp.FixedEntry("ENTHRN_CER",1990,1990, 10, 12),
   new hdayjp.FixedEntry("1993-06-09",1993,1993,  5,  9),
+  new hdayjp.FixedEntry("ENTHRN_DAY",2019,2019,  4,  1),
+  new hdayjp.FixedEntry("ENTHRN_CER",2019,2019,  9, 22),
   // 1948 (July-)
   // 2014-12-10 - syear of NYD,CAD,(Vernal),EBD,CTD,CDD are changed (1948 to 1949)
   // (issue #2)
