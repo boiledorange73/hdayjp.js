@@ -363,8 +363,9 @@ hdayjp.entries = [
   new hdayjp.FixedEntry("RAD",1966,2002, 8, 15), // 敬老の日(9月15日) - 2002
   new hdayjp.FixedEntry("HSD",1966,1999, 9, 10), // 体育の日(9月15日) - 1999
   // 1989
+  // 2019-04-26: EBD (Heisei Ara) changed to 1989-2018
   new hdayjp.FixedEntry("GRD",1989,2006, 3, 29), // みどりの日(4月29日) - 2006
-  new hdayjp.FixedEntry("EBD",1989,null, 11, 23), // 天皇誕生日(12月23日)
+  new hdayjp.FixedEntry("EBD",1989,2018, 11, 23), // 天皇誕生日(12月23日) - 2018
   // 1996
   new hdayjp.FixedEntry("MRD",1996,2002, 6, 20), // 海の日(7月20日) - 2002
   // 2000
@@ -378,7 +379,10 @@ hdayjp.entries = [
   new hdayjp.FixedEntry("GRD",2007,null, 4, 4), // みどりの日(5月4日)
   // 2016
   new hdayjp.FixedEntry("MTD",2016,null, 7, 11), // 山の日(8月11日)
-  // 2020 (Added: 2018-06-13)
+  // 2020
+  // 2018-06-13: SPD added.
+  // 2019-04-26: EBD (Reiwa Ara) added.
+  new hdayjp.FixedEntry("EBD",2020,null, 1, 23), // 天皇誕生日(12月23日) - 2018
   new hdayjp.WdayEntry("SPD",2020,null, 9, 2, 1), // スポーツの日(10月第2月曜)
   null
 ];
