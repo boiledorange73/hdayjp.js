@@ -389,7 +389,7 @@ hdayjp.entries = [
 
 // ================================================
 // all irregular hdays
-// Added: 2018-06-13
+// Added: 2018-06-13 (2020), 2020-12-07 (2021)
 // ================================================
 hdayjp._ihds = [
   new hdayjp.irregularHDays(
@@ -406,6 +406,23 @@ hdayjp._ihds = [
       {
         "id": "MTD",
         "to": [7, 10]
+      }
+    ]
+  ),
+  new hdayjp.irregularHDays(
+    2021,
+    [
+      {
+        "id": "MRD",
+        "to": [6, 22]
+      },
+      {
+        "id": "SPD",
+        "to": [6, 23]
+      },
+      {
+        "id": "MTD",
+        "to": [7, 8]
       }
     ]
   )
